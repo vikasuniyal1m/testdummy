@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" data-root="..">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>ImmiAccount — Login</title>
+	<link href="../assets/images/logoflat.png" rel="icon" type="image/png" />
+	<link rel="stylesheet" href="../assets/css/theme.css?v=responsive-1" />
+	<link rel="stylesheet" href="../assets/css/site.css?v=login-error-visibility-2" />
+	<script src="../assets/js/site.js" defer></script>
+	<script src="../assets/js/loading-indicator.js?v=loading-2" defer></script>
+	<script src="../assets/js/login.js" defer></script>
+</head>
+<body>
+	<header role="banner">
+		<div>
+			<h1>ImmiAccount</h1>
+		</div>
+<!--		<nav class="site-nav" aria-label="Site">-->
+<!--			<ul>-->
+<!--				<li><a href="login.html" aria-current="page">Login</a></li>-->
+<!--				<li><a href="help.html">Help</a></li>-->
+<!--				<li><a href="create-account.html">Create account</a></li>-->
+<!--			</ul>-->
+<!--		</nav>-->
+	</header>
+
+	<h1 class="panelHeading">Login</h1>
+	<div>
+<!--		<section class="messagebox info">-->
+<!--			<h1>Information</h1>-->
+<!--			<div class="message">-->
+<!--				<h2><strong>Temporary travel restrictions for Iranian Visitor visa holders</strong></h2>-->
+<!--				<p>For more information see-->
+<!--					<a href="https://www.homeaffairs.gov.au/help-and-support/arrival-control-determination"-->
+<!--					   rel="noreferrer" target="_blank">-->
+<!--						Temporary travel restrictions for Visitor visa holders with Iranian passports-->
+<!--					</a>.-->
+<!--				</p>-->
+<!--			</div>-->
+<!--			<div class="message">-->
+<!--				<h2><strong>Planned system maintenance</strong></h2>-->
+<!--				<p>Our online systems will be unavailable-->
+<!--					<strong>from 8:00 pm Friday 25 September 2026 to 12 noon Saturday 26 September 2026 (AEST)</strong>-->
+<!--					for scheduled maintenance.-->
+<!--				</p>-->
+<!--				<p>For details, please visit the-->
+<!--					<a href="https://www.homeaffairs.gov.au/help-and-support/system-maintenance-and-technical-issues"-->
+<!--					   rel="noreferrer" target="_blank">-->
+<!--						Systems maintenance news article page-->
+<!--					</a>.-->
+<!--				</p>-->
+<!--				<p>We apologise for any inconvenience and thank you for your patience.</p>-->
+<!--			</div>-->
+<!--		</section>-->
+
+		<h2>Login to ImmiAccount</h2>
+		<p>Fields marked <span style="color:#e00;">*</span> must be completed.</p>
+
+		<div class="form">
+			<div class="field">
+				<label for="username" class="required">Username</label>
+				<div>
+					<input id="username" name="username" type="text" size="60" aria-required="true" autocomplete="username" />
+					<a href="help.html#username" title="Username help" class="help">Username help (opens in a new window)</a>
+				</div>
+			</div>
+			<div class="field">
+				<label for="password" class="required">Password</label>
+				<div>
+					<input id="password" name="password" type="password" size="60" aria-required="true" autocomplete="current-password" />
+					<a href="help.html#password" title="Password help" class="help">Password help (opens in a new window)</a>
+				</div>
+			</div>
+		</div>
+
+		<p id="login-error" class="fieldError" hidden>
+			<span>Invalid credentials.</span>
+		</p>
+
+		<div class="buttonBarLR">
+			<a class="ui-btn" href="login.html">Cancel</a>
+			<button type="button" class="ui-btn" id="btn-login">Login</button>
+		</div>
+
+		<br />
+		<div style="text-align: right;">
+			<p>I have forgotten my ImmiAccount
+				<a href="forgot-username.html">username</a> or
+				<a href="forgot-password.html">password</a>
+			</p>
+			<p>I no longer have access to my
+				<a href="lost-mfa.html">multi-factor authentication app</a>
+			</p>
+		</div>
+
+		<hr />
+
+		<h2>Create an ImmiAccount</h2>
+		<p>Create an ImmiAccount to access the Department of Home Affairs's online services.</p>
+		<a class="ui-btn" href="create-account.html">Create ImmiAccount</a>
+		<a href="help.html#create" title="Create ImmiAccount help" class="help">Create ImmiAccount help (opens in a new window)</a>
+	</div>
+
+	<footer>
+		<ul>
+			<li><a href="https://www.homeaffairs.gov.au/access-and-accountability/using-our-website/accessibility" rel="noreferrer" target="_blank">Accessibility</a></li>
+			<li><a href="https://www.homeaffairs.gov.au/access-and-accountability/using-our-website/copyright-and-disclaimer" rel="noreferrer" target="_blank">Copyright &amp; Disclaimer</a></li>
+			<li><a href="https://www.homeaffairs.gov.au/access-and-accountability/using-our-website/online-security" rel="noreferrer" target="_blank">Online Security</a></li>
+			<li><a href="https://www.homeaffairs.gov.au/access-and-accountability/our-commitments/privacy" rel="noreferrer" target="_blank">Privacy</a></li>
+		</ul>
+	</footer>
+</body>
+</html>

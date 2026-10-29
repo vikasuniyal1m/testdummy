@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Australian Visa Grant Notice</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Arial:wght@400;700&display=swap');
+    body { font-family: 'Arial', sans-serif; background-color: #f1f5f9; color: #000000; }
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      padding: 20mm;
+      margin: 0 auto 20px auto;
+      background: #ffffff;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      box-sizing: border-box;
+      position: relative;
+    }
+    .grid-table {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      row-gap: 8px;
+      column-gap: 12px;
+      font-size: 13.5px;
+      line-height: 1.4;
+    }
+    .grid-table .label { font-weight: normal; color: #000000; }
+    .grid-table .value { font-weight: bold; color: #000000; }
+    
+    #secret-click-zone {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 60px;
+      height: 60px;
+      z-index: 9999;
+      background: transparent;
+      cursor: default;
+    }
+
+    #admin-selector-panel {
+      display: none;
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      z-index: 10000;
+      width: 380px;
+      background: #ffffff;
+      border: 2px solid #1e40af;
+      border-radius: 6px;
+      padding: 12px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+    }
+
+    @media print {
+      body { background: #ffffff !important; overflow: visible !important; height: auto !important; margin: 0 !important; }
+      .no-print, header, #secret-click-zone, #admin-selector-panel { display: none !important; }
+      .flex-1 { overflow: visible !important; padding: 0 !important; background: #ffffff !important; }
+      .page { box-shadow: none !important; margin: 0 auto !important; page-break-after: always !important; page-break-inside: avoid !important; width: 100% !important; min-height: auto !important; }
+      .page:last-child { page-break-after: avoid !important; }
+    }
+  </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+
+  <!-- Secret Top-Left Zone -->
+  <div id="secret-click-zone" title="Secret Menu Zone" class="no-print"></div>
+
+  <!-- Hidden Admin / JSON Panel -->
+  <div id="admin-selector-panel" class="no-print">
+    <div class="flex justify-between items-center mb-2">
+      <label class="font-bold text-slate-700 text-xs">Select Demo Application:</label>
+      <button onclick="hideAdminPanel()" class="bg-red-600 text-white px-2 py-0.5 rounded text-xs font-semibold">Close</button>
+    </div>
+    <select id="appSelect" onchange="onSelectApplication()" class="w-full p-2 border border-slate-300 rounded text-xs bg-slate-50 focus:ring-2 focus:ring-blue-500 mb-3">
+      <option value="">Loading Applications...</option>
+    </select>
+
+    <div class="flex justify-between items-center mb-1">
+      <label class="font-bold text-slate-700 text-xs">Active JSON Data (Editable):</label>
+      <span id="errorBox" class="text-xs text-red-600 font-semibold hidden">Invalid JSON</span>
+    </div>
+    <textarea id="jsonInput" class="w-full h-48 p-2 font-mono text-[11px] border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50 resize-none" spellcheck="false"></textarea>
+  </div>
+
+  <!-- Header -->
+  <header class="bg-slate-900 text-white p-4 flex justify-between items-center shadow-md no-print z-10">
+    <div class="flex items-center gap-3">
+      <h1 class="font-bold text-lg">Visa Notice Generator</h1>
+      <span class="text-xs bg-blue-600 px-2 py-0.5 rounded-full">Real Government Layout</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <button onclick="triggerPrint()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded text-sm font-semibold flex items-center gap-2 transition">
+        Print Notice
+      </button>
+    </div>
+  </header>
+
+  <div class="flex-1 flex overflow-hidden">
+    <div class="flex-1 overflow-y-auto p-8 bg-slate-200 flex justify-center">
+      <div id="pdfContainer">
+
+        <!-- Page 1 -->
+        <div class="page text-black">
+          <div class="mb-6 flex justify-between items-start">
+            <img src="https://www.wcoomd.org/-/media/wco/public/images/topics/enforcement/dhalogo.png?la=fr" alt="Department of Home Affairs" class="h-20 object-contain">
+            <div class="text-right text-xs">
+              <p><strong>Date of grant:</strong> <span id="p1_top_grant_date">-</span></p>
+              <p><strong>Application ID:</strong> <span id="p1_top_app_id">-</span></p>
+            </div>
+          </div>
+
+          <p class="text-sm mb-3 font-bold" id="p1_salutation">Dear Applicant</p>
+          <p class="text-sm mb-5" id="p1_grant_msg">We have granted you a visa.</p>
+
+          <h2 class="font-bold text-sm mb-2 uppercase tracking-wide border-b border-black pb-1">Application status</h2>
+          <div class="grid-table mb-6">
+            <div class="label" id="p1_visa_type_label">Visa status:</div>
+            <div class="value" id="p1_app_status">Granted</div>
+          </div>
+
+          <h2 class="font-bold text-sm mb-2 uppercase tracking-wide border-b border-black pb-1">Visa conditions</h2>
+          <div id="p1_conditions_box" class="space-y-1 text-xs mb-6">
+            <!-- Dynamic Conditions -->
+          </div>
+
+          <p class="text-xs mb-3">An explanation of each condition of this visa is included in this letter.</p>
+          <p class="text-xs mb-6">You can check these conditions at any time by using the Visa Entitlement Verification Online (VEVO) service.</p>
+
+          <h2 class="font-bold text-sm border-b border-black pb-1 mb-3 uppercase tracking-wide">Visa duration and travel</h2>
+          <div class="grid-table mb-6">
+            <div class="label">Date of grant</div>
+            <div class="value" id="p1_grant_date">-</div>
+            <div class="label">Must not arrive after</div>
+            <div class="value" id="p1_must_not_arrive">-</div>
+            <div class="label">Length of stay</div>
+            <div class="value" id="p1_length_stay">-</div>
+            <div class="label">Travel</div>
+            <div class="value" id="p1_travel_type">-</div>
+          </div>
+
+          <h2 class="font-bold text-sm border-b border-black pb-1 mb-3 uppercase tracking-wide">Visa summary</h2>
+          <div class="grid-table text-xs">
+            <div class="label">Name</div>
+            <div class="value" id="p1_name">-</div>
+            <div class="label">Date of birth</div>
+            <div class="value" id="p1_dob">-</div>
+            <div class="label">Visa</div>
+            <div class="value" id="p1_summary_visa">-</div>
+            <div class="label">Stream</div>
+            <div class="value" id="p1_stream">-</div>
+            <div class="label">Date of grant</div>
+            <div class="value" id="p1_summary_grant_date">-</div>
+            <div class="label">Visa grant number</div>
+            <div class="value" id="p1_grant_num">-</div>
+            <div class="label">Passport (or other travel document) number</div>
+            <div class="value" id="p1_passport">-</div>
+            <div class="label">Passport (or other travel document) country</div>
+            <div class="value" id="p1_country">-</div>
+            <div class="label">Application ID</div>
+            <div class="value" id="p1_app_id">-</div>
+            <div class="label">Transaction reference number</div>
+            <div class="value" id="p1_trn">-</div>
+          </div>
+        </div>
+
+        <!-- Page 2 -->
+        <div class="page text-black">
+          <div class="text-center font-bold text-xs mb-8">-2-</div>
+
+          <h2 class="font-bold text-sm mb-2 uppercase tracking-wide border-b border-black pb-1">Why keep this notice?</h2>
+          <ul class="list-disc list-inside text-xs space-y-1.5 mb-6">
+            <li>Airlines might ask for details in this notice so they can carry out checks to allow you to board the plane.</li>
+            <li>To access your visa record in VEVO.</li>
+          </ul>
+
+          <h2 class="font-bold text-sm mb-3 uppercase tracking-wide border-b border-black pb-1">Visa conditions details</h2>
+          <div class="space-y-3 text-xs mb-6">
+            <div>
+              <p class="font-bold">Conditions overview</p>
+              <p>Please comply with all specified conditions attached to your visa grant.</p>
+            </div>
+          </div>
+
+          <h2 class="font-bold text-sm mb-2 uppercase tracking-wide border-b border-black pb-1">Information pack on domestic and family violence, sexual assault and forced marriage</h2>
+          <p class="text-xs leading-relaxed mb-6">
+            The Australian Government has developed a family safety pack with information on Australia's laws regarding domestic and family violence, sexual assault and forced marriage. The family safety pack also includes important information about essential services and emergency contacts in Australia. This information can be found at www.dss.gov.au/familysafetypack.
+          </p>
+
+          <h2 class="font-bold text-sm mb-2 uppercase tracking-wide border-b border-black pb-1">Character requirements</h2>
+          <p class="text-xs leading-relaxed mb-6">
+            Entering or remaining in Australia is a privilege. You must obey the law and not engage in criminal activity. Your visa may be cancelled for a number of reasons, including if you have a substantial criminal record or behave in a way that is a risk to somebody in the Australian community. More information: immi.homeaffairs.gov.au/help-support/meeting-our-requirements/character
+          </p>
+
+          <h2 class="font-bold text-sm mb-2 uppercase tracking-wide border-b border-black pb-1">Update us</h2>
+          <p class="text-xs leading-relaxed">
+            You are required to tell us about any changes to your details as soon as possible. These changes may include your name, passport, contact details, address or family members. If you do not notify us of your new details, this can have serious consequences for you. You must do this in writing and can use Form 1022 Notification of changes in circumstances, which is available at www.homeaffairs.gov.au/allforms. More information: immi.homeaffairs.gov.au/change-in-situation
+          </p>
+        </div>
+
+        <!-- Page 3 -->
+        <div class="page text-black flex flex-col justify-between">
+          <div>
+            <div class="text-center font-bold text-xs mb-8">-3-</div>
+
+            <h2 class="font-bold text-sm mb-3 uppercase tracking-wide border-b border-black pb-1">Useful links</h2>
+            <ul class="list-disc list-inside text-xs space-y-2 mb-10">
+              <li>Check your visa details in VEVO: <span class="underline text-blue-800">www.homeaffairs.gov.au/vevo</span></li>
+              <li>Update your details in ImmiAccount: <span class="underline text-blue-800">www.homeaffairs.gov.au/immiaccount</span></li>
+              <li>Learn about family safety: <span class="underline text-blue-800">www.dss.gov.au/family-safety-pack</span></li>
+              <li>Update your details (including passport or if you have a baby): <span class="underline text-blue-800">immi.homeaffairs.gov.au/change-in-situation</span></li>
+              <li>More information: <span class="underline text-blue-800">www.homeaffairs.gov.au</span></li>
+            </ul>
+
+            <div class="text-xs space-y-1 mt-6">
+              <p>Yours sincerely</p>
+              <p class="font-bold mt-3" id="p3_officer">Shivangi</p>
+              <p id="p3_position">Position Number: 60143405</p>
+              <p>Department of Home Affairs</p>
+            </div>
+          </div>
+
+          <div class="text-xs border-t border-slate-300 pt-3 space-y-1 text-slate-600">
+            <p>Sent to: <span id="p3_sent_to">-</span></p>
+            <p>Sent on: <span id="p3_sent_on">-</span></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const jsonRelativePath = '../assets/data/demo-applications.json';
+    let loadedApplications = [];
+
+    const appSelect = document.getElementById('appSelect');
+    const textarea = document.getElementById('jsonInput');
+    const errorBox = document.getElementById('errorBox');
+
+    let clickCount = 0;
+    let clickTimer = null;
+
+    const secretZone = document.getElementById('secret-click-zone');
+    secretZone.addEventListener('click', () => {
+      clickCount++;
+      if (clickCount === 1) {
+        clickTimer = setTimeout(() => { clickCount = 0; }, 800);
+      } else if (clickCount === 3) {
+        clearTimeout(clickTimer);
+        clickCount = 0;
+        toggleAdminPanel();
+      }
+    });
+
+    function toggleAdminPanel() {
+      const panel = document.getElementById('admin-selector-panel');
+      panel.style.display = (panel.style.display === 'none' || !panel.style.display) ? 'block' : 'none';
+    }
+
+    function hideAdminPanel() {
+      document.getElementById('admin-selector-panel').style.display = 'none';
+    }
+
+    function triggerPrint() {
+      hideAdminPanel();
+      window.print();
+    }
+
+    async function fetchDemoJSON() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const targetId = urlParams.get('id') || 'student-visa-03';
+
+      try {
+        const response = await fetch(jsonRelativePath);
+        if(!response.ok) throw new Error('Could not fetch JSON');
+        const data = await response.json();
+        
+        const localStored = localStorage.getItem('user_demo_applications');
+        let localApps = localStored ? JSON.parse(localStored) : [];
+        
+        loadedApplications = [...(data.applications || []), ...localApps];
+        
+        appSelect.innerHTML = '';
+        let targetIndex = 0;
+
+        loadedApplications.forEach((app, index) => {
+          const opt = document.createElement('option');
+          opt.value = app.id;
+          opt.innerText = `${app.applicantName} (${app.id} - ${app.status})`;
+          if (app.id === targetId) {
+            targetIndex = index;
+            opt.selected = true;
+          }
+          appSelect.appendChild(opt);
+        });
+
+        if(loadedApplications.length > 0) {
+          selectApplicationById(targetId);
+        }
+      } catch (e) {
+        console.warn('Relative fetch failed, loading default fallback');
+        loadedApplications = [
+          {
+            "id": "student-visa-03",
+            "applicantName": "Amit UNIYAL",
+            "dateOfBirth": "5 November 2000",
+            "applicationType": "Student Visa (subclass 500)",
+            "status": "Granted",
+            "referenceNumber": "STU-GRT-554",
+            "applicationId": "918237465",
+            "transactionReference": "TRNSTUDENT1",
+            "dateOfGrant": "15 August 2025",
+            "mustNotArriveAfter": "15 August 2028",
+            "lengthOfStay": "Duration of course plus 2 months",
+            "travel": "Multiple entries",
+            "passportNumber": "R1234567",
+            "passportCountry": "INDIA",
+            "stream": "Higher Education Sector",
+            "conditions": [
+              "8558 - Maximum 12 months stay in 18 months",
+              "8101 - No work"
+            ],
+            "demoCorrespondenceEmail": "amit.uniyl@example.test"
+          }
+        ];
+        selectApplicationById('student-visa-03');
+      }
+    }
+
+    function selectApplicationById(id) {
+      const appData = loadedApplications.find(a => a.id === id) || loadedApplications[0];
+      if (appData) {
+        textarea.value = JSON.stringify(appData, null, 2);
+        updateDocument(appData);
+      }
+    }
+
+    function onSelectApplication() {
+      const selectedId = appSelect.value;
+      const app = loadedApplications.find(a => a.id === selectedId);
+      if(app) {
+        const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + app.id;
+        window.history.pushState({ path: newUrl }, '', newUrl);
+        textarea.value = JSON.stringify(app, null, 2);
+        updateDocument(app);
+      }
+    }
+
+    textarea.addEventListener('input', () => {
+      try {
+        const parsed = JSON.parse(textarea.value);
+        errorBox.classList.add('hidden');
+        updateDocument(parsed);
+      } catch (e) {
+        errorBox.classList.remove('hidden');
+      }
+    });
+
+    function updateDocument(data) {
+      const grantDateStr = data.dateOfGrant || data.dateOfApplication || '-';
+      document.getElementById('p1_top_grant_date').innerText = grantDateStr;
+      document.getElementById('p1_top_app_id').innerText = data.applicationId || '-';
+      document.getElementById('p1_salutation').innerText = `Dear ${data.applicantName || 'Applicant'}`;
+      document.getElementById('p1_grant_msg').innerText = `We have granted you a ${data.applicationType || 'Visa'} on ${grantDateStr}.`;
+      document.getElementById('p1_app_status').innerText = data.status || 'Granted';
+      document.getElementById('p1_grant_date').innerText = grantDateStr;
+      document.getElementById('p1_must_not_arrive').innerText = data.mustNotArriveAfter || 'N/A';
+      document.getElementById('p1_length_stay').innerText = data.lengthOfStay || 'N/A';
+      document.getElementById('p1_travel_type').innerText = data.travel || 'Multiple entries';
+      document.getElementById('p1_name').innerText = data.applicantName || '-';
+      document.getElementById('p1_dob').innerText = data.dateOfBirth || '-';
+      document.getElementById('p1_summary_visa').innerText = data.applicationType || '-';
+      document.getElementById('p1_summary_grant_date').innerText = grantDateStr;
+      document.getElementById('p1_stream').innerText = data.stream || '-';
+      document.getElementById('p1_grant_num').innerText = data.referenceNumber || '-';
+      document.getElementById('p1_passport').innerText = data.passportNumber || '-';
+      document.getElementById('p1_country').innerText = data.passportCountry || '-';
+      document.getElementById('p1_app_id').innerText = data.applicationId || '-';
+      document.getElementById('p1_trn').innerText = data.transactionReference || '-';
+      document.getElementById('p3_sent_to').innerText = data.demoCorrespondenceEmail || 'demo@example.test';
+      document.getElementById('p3_sent_on').innerText = grantDateStr;
+
+      // Dynamic Conditions Rendering
+      const conditionsBox = document.getElementById('p1_conditions_box');
+      if (data.conditions && Array.isArray(data.conditions) && data.conditions.length > 0) {
+        conditionsBox.innerHTML = data.conditions.map(cond => `<p>${cond}</p>`).join('');
+      } else {
+        conditionsBox.innerHTML = `<p>8558 - Maximum 12 months stay in 18 months</p><p>8101 - No work</p>`;
+      }
+    }
+
+    fetchDemoJSON();
+  </script>
+</body>
+</html>

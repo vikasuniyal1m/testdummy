@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="shortcut icon" href="../assets/images/logoflat.png">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Online Account - Import application</title>
+<link type="text/css" rel="stylesheet" href="../assets/css/ola-wc.css?v=responsive-5" media="screen">
+<script src="../assets/js/ola-shell.js?v=shared-header-5" defer></script>
+<script src="../assets/js/loading-indicator.js?v=loading-2" defer></script>
+</head>
+<body data-wc-domready="true" data-ola-page="applications">
+<noscript><p>You must have JavaScript enabled to use this application.</p></noscript>
+<form action="#" method="post" id="import-form" class="wc-application" onsubmit="return false;">
+
+<header id="_0a0" class="wc-panel wc-panel-type-header" role="banner">
+	<div class="wc-content">
+		<div id="_0a0a" class="wc-panel"><ol class="wc-listlayout wc-align-right wc-listlayout-type-flat wc_list_nb"><li><span id="_0a0a0" class="wc-decoratedlabel"><span id="_0a0a0-body" class="wc-labelbody wc_dlbl_seg"><span class="wc-text wc-text-type-plain" id="headerProfileText">Portal User</span></span></span></li><li><button id="_0a0a1" name="_0a0a1" value="x" type="submit" class="wc-button wc-linkbutton">Manage Account</button></li><li><button id="_0a0a2" name="_0a0a2" value="x" type="submit" class="wc-button wc-linkbutton wc_btn_cancel" formnovalidate="formnovalidate">Logout</button></li></ol></div>
+		<h1 id="_0a0b" class="wc-heading">ImmiAccount</h1>
+	</div>
+</header>
+
+<div id="_0a1" class="wc-menu wc-menu-type-bar wc-respond wc_menu_bar" role="menubar">
+	<button role="menuitemradio" tabindex="0" id="_0a1a0" class="wc-menuitem wc-invite wc-nobutton" type="submit" name="_0a1a0" value="x" aria-checked="true">
+		<span class="wc-decoratedlabel"><span class="wc-labelbody wc_dlbl_seg">My applications</span></span>
+	</button>
+</div>
+
+<section id="mainpanel_parentSection" class="wc-section">
+	<header id="mainpanel_parentSection_0" class="wc-decoratedlabel">
+		<h1 id="mainpanel_parentSection_0-body" class="wc-labelbody wc_dlbl_seg">Import application</h1>
+	</header>
+	<div id="mainpanel_parentSection_1" class="wc-panel">
+		<div class="wc-content">
+			<h2 class="import-section-title">Application details</h2>
+			<p id="demo-form-feedback" class="import-copy" role="alert" style="color: red; margin-bottom: 10px;" hidden></p>
+			
+			<div class="import-field">
+				<label for="i_apptypedd_input">Application type <span class="required" aria-hidden="true">*</span></label>
+				<select id="i_apptypedd_input" name="i_apptypedd" required>
+					<option value="" selected></option>
+					<option value="Visitor (subclass 600)">Visitor (subclass 600)</option>
+					<option value="Student Visa (subclass 500)">Student Visa (subclass 500)</option>
+					<option value="Visa or citizenship application">Visa or citizenship application</option>
+				</select>
+			</div>
+			<div class="import-field">
+				<label for="i_refno_input">Reference number <span class="required" aria-hidden="true">*</span></label>
+				<input id="i_refno_input" name="i_refno" type="text" maxlength="20" required>
+			</div>
+			
+			<h2 class="import-section-title">Main applicant details</h2>
+			<div class="import-field">
+				<label for="i_dobdt_input">Date of birth <span class="required" aria-hidden="true">*</span></label>
+				<input id="i_dobdt_input" name="i_dobdt" type="date" required>
+			</div>
+			<div class="import-field">
+				<label for="i_ppno_input">Travel document number <span class="required" aria-hidden="true">*</span></label>
+				<input id="i_ppno_input" name="i_ppno" type="text" maxlength="14" required>
+			</div>
+			<div class="import-field">
+				<label for="i_cntryppdd_input">Country of travel document <span class="required" aria-hidden="true">*</span></label>
+				<select id="i_cntryppdd_input" name="i_cntryppdd" required>
+					<option value="" selected></option>
+					<option value="INDIA">INDIA</option>
+					<option value="UNITED STATES">UNITED STATES</option>
+					<option value="UNITED KINGDOM">UNITED KINGDOM</option>
+					<option value="CANADA">CANADA</option>
+					<option value="AUSTRALIA">AUSTRALIA</option>
+				</select>
+			</div>
+			
+			<div class="import-actions" style="margin-top: 20px;">
+				<button id="import-cancel" type="button" class="wc-button" onclick="window.location.href='applications.html'; return false;">Cancel</button>
+				<button id="import-confirm" type="button" class="wc-button" style="background: #047857; color: #fff; margin-left: 10px;" onclick="handleImportSubmit()">Confirm</button>
+			</div>
+		</div>
+	</div>
+</section>
+
+<footer id="_0a3" class="wc-panel wc-panel-type-footer">
+	<div class="wc-content">
+		<ul class="wc-listlayout wc-align-left wc-listlayout-type-flat wc-listlayout-separator-bar">
+			<li><a href="https://www.homeaffairs.gov.au" target="_blank" rel="noopener noreferrer">Home Affairs</a></li>
+		</ul>
+	</div>
+</footer>
+</form>
+
+<script>
+  async function handleImportSubmit() {
+    const refNo = document.getElementById('i_refno_input').value.trim();
+    const passport = document.getElementById('i_ppno_input').value.trim();
+    const feedback = document.getElementById('demo-form-feedback');
+
+    if (!refNo || !passport) {
+      feedback.innerText = "Please enter Reference number and Travel document number.";
+      feedback.hidden = false;
+      return;
+    }
+
+    try {
+      // Direct JSON file se data fetch karenge bina kisi hardcode ke
+      const response = await fetch('../assets/data/demo-applications.json');
+      if (!response.ok) throw new Error('Failed to load JSON');
+      const data = await response.json();
+
+      let matchedApp = null;
+      if (data && data.applications) {
+        // User ke enter kiye hue reference number ya passport se exact JSON object match karenge
+        matchedApp = data.applications.find(app => 
+          (app.referenceNumber && app.referenceNumber.toLowerCase() === refNo.toLowerCase()) || 
+          (app.passportNumber && app.passportNumber.toLowerCase() === passport.toLowerCase())
+        );
+      }
+
+      if (matchedApp) {
+        // Agar JSON me mil gaya, toh usi ki ID utha ke redirect kar do
+        window.location.href = `application-details.html?id=${matchedApp.id}`;
+      } else {
+        feedback.innerText = "No matching application found for this Reference / Passport number.";
+        feedback.hidden = false;
+      }
+    } catch (err) {
+      feedback.innerText = "Error reading JSON data file.";
+      feedback.hidden = false;
+    }
+  }
+</script>
+</body>
+</html>

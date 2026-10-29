@@ -1,0 +1,142 @@
+/* Shared UI styles for all pages */
+.demo-banner {
+	background: #ffc90f;
+	color: #000;
+	text-align: center;
+	padding: 0.5em 1em;
+	font-size: 0.9em;
+	border-bottom: 1px solid #ccc;
+	margin: 0;
+}
+
+.buttonBarLR a.ui-btn {
+	display: inline-block;
+	padding: 0.2em 0.6em;
+	border: 1px solid #767676;
+	background: #f0f0f0;
+	color: #000;
+	text-decoration: none;
+	font: inherit;
+}
+
+.buttonBarLR a.ui-btn:last-child {
+	float: right;
+}
+
+.buttonBarLR a.ui-btn:hover {
+	background: #d8f0fc;
+}
+
+button.ui-btn {
+	font: inherit;
+	padding: 0.2em 0.6em;
+	border: 1px solid #767676;
+	background: #f0f0f0;
+	color: #000;
+	cursor: pointer;
+}
+
+.buttonBarLR button.ui-btn {
+	float: right;
+	margin-left: 5px;
+}
+
+button.ui-btn:disabled {
+	opacity: 0.65;
+	cursor: not-allowed;
+}
+
+.page-panel {
+	margin: 0 1em 1em 1em;
+	padding: 1em;
+	background: #fff;
+}
+
+.site-nav {
+	padding: 0 12px;
+	background-color: #1b3564;
+}
+
+.site-nav ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	text-align: right;
+}
+
+.site-nav li {
+	display: inline-block;
+}
+
+.site-nav a {
+	color: #fff;
+	text-decoration: none;
+	padding: 6px 8px;
+	display: inline-block;
+}
+
+.site-nav a:hover,
+.site-nav a[aria-current="page"] {
+	color: #000;
+	background-color: #d8f0fc;
+}
+
+@media (max-width: 700px) {
+	.site-nav ul {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.site-nav li {
+		max-width: 100%;
+	}
+
+	.site-nav a {
+		padding: 8px;
+	}
+
+	.page-panel {
+		min-width: 0;
+	}
+
+	.buttonBarLR {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px;
+	}
+
+	.buttonBarLR a.ui-btn:last-child,
+	.buttonBarLR button.ui-btn {
+		float: none;
+		margin-left: 0;
+	}
+
+	.demo-banner {
+		overflow-wrap: anywhere;
+	}
+
+	footer li {
+		margin: 2px 0;
+	}
+}
+
+@media (max-width: 360px) {
+	.site-nav {
+		padding-right: 4px;
+		padding-left: 4px;
+	}
+
+	.site-nav a {
+		padding: 8px 6px;
+	}
+
+	.buttonBarLR {
+		justify-content: flex-start;
+	}
+}
+*[hidden] {
+	display: none !important;
+}
