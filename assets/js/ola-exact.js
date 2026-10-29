@@ -14,8 +14,7 @@
 			var form = document.querySelector("form");
 			document.body.insertBefore(message, form || document.body.firstChild);
 		}
-		var details = " Start the local JSON-writing server with \"python local-demo-server.py\" and open http://127.0.0.1:8767/.";
-		message.textContent = "Demo data could not be loaded: " + error.message + "." + details;
+
 	}
 
 	function loadDemoData() {
@@ -66,7 +65,8 @@
 							return item &&
 								typeof item.type === "string" &&
 								typeof item.date === "string" &&
-								typeof item.action === "string";
+								typeof item.action === "string" &&
+								(item.url === undefined || typeof item.url === "string");
 						})
 					)) &&
 					(record.demoUpdates === undefined || (
@@ -180,7 +180,7 @@
 		};
 		var applicationHeading = document.getElementById("demo-application-heading");
 		if (applicationHeading) {
-			applicationHeading.textContent = "Fictional application — Travel document: " + record.passportNumber;
+			applicationHeading.textContent = "Application — Travel document: " + record.passportNumber;
 		}
 		["demo-detail-nav", "demo-detail-actions"].forEach(function (navId) {
 			var nav = document.getElementById(navId);
@@ -200,8 +200,8 @@
 		});
 
 		var note = document.createElement("p");
-		note.className = "demo-record-note";
-		note.textContent = "FICTIONAL DEMO RECORD — This is sample data for interface testing, not a real application or decision.";
+//		note.className = "demo-record-note";
+//		note.textContent = "FICTIONAL DEMO RECORD — This is sample data for interface testing, not a real application or decision.";
 		output.appendChild(note);
 		var title = document.createElement("h2");
 		title.className = "import-section-title";
@@ -210,7 +210,7 @@
 
 		if (!views[view]) {
 			var invalidView = document.createElement("p");
-			invalidView.textContent = "That demo section is not available. Choose a section from the navigation.";
+//			invalidView.textContent = "That demo section is not available. Choose a section from the navigation.";
 			output.appendChild(invalidView);
 			return;
 		}
@@ -227,34 +227,43 @@
 			applicantsLabel.textContent = "Applicants";
 			output.appendChild(applicantsLabel);
 			var applicants = document.createElement("ul");
-			var applicant = document.createElement("li");
-			applicant.textContent = record.applicantName +
-				(record.dateOfBirth ? " (" + record.dateOfBirth + ")" : "") +
-				" — " + (record.applicantStatus || record.status);
-			applicants.appendChild(applicant);
+			var applicantRecords = Array.isArray(record.homeApplicants) && record.homeApplicants.length
+				? record.homeApplicants
+				: [{
+					name: record.applicantName +
+						(record.dateOfBirth ? " (" + record.dateOfBirth + ")" : ""),
+					status: record.applicantStatus || record.status
+				}];
+			applicantRecords.forEach(function (item) {
+				var applicant = document.createElement("li");
+				applicant.textContent = item.name + " - " + item.status;
+				applicants.appendChild(applicant);
+			});
 			output.appendChild(applicants);
 
-			var importedDetailsHeading = document.createElement("h3");
-			importedDetailsHeading.textContent = "Imported demo details";
-			output.appendChild(importedDetailsHeading);
-			var importedDetails = document.createElement("dl");
-			importedDetails.className = "demo-detail-list";
-			[
-				["Application type", record.applicationType],
-				["Reference number", record.referenceNumber],
-				["Date of birth", record.dateOfBirth],
-				["Travel document", record.passportNumber + " — " + record.passportCountry],
-				["Application ID", record.applicationId],
-				["Transaction reference", record.transactionReference]
-			].forEach(function (item) {
-				var term = document.createElement("dt");
-				term.textContent = item[0];
-				var value = document.createElement("dd");
-				value.textContent = item[1] || "—";
-				importedDetails.appendChild(term);
-				importedDetails.appendChild(value);
-			});
-			output.appendChild(importedDetails);
+			if (!record.homeApplicants) {
+				var importedDetailsHeading = document.createElement("h3");
+				importedDetailsHeading.textContent = "Imported demo details";
+				output.appendChild(importedDetailsHeading);
+				var importedDetails = document.createElement("dl");
+				importedDetails.className = "demo-detail-list";
+				[
+					["Application type", record.applicationType],
+					["Reference number", record.referenceNumber],
+					["Date of birth", record.dateOfBirth],
+					["Travel document", record.passportNumber + " — " + record.passportCountry],
+					["Application ID", record.applicationId],
+					["Transaction reference", record.transactionReference]
+				].forEach(function (item) {
+					var term = document.createElement("dt");
+					term.textContent = item[0];
+					var value = document.createElement("dd");
+					value.textContent = item[1] || "—";
+					importedDetails.appendChild(term);
+					importedDetails.appendChild(value);
+				});
+				output.appendChild(importedDetails);
+			}
 
 			var importantHeading = document.createElement("h3");
 			importantHeading.className = "demo-important-heading";
@@ -262,7 +271,7 @@
 			output.appendChild(importantHeading);
 			var importantText = document.createElement("p");
 			importantText.textContent = record.importantInformation ||
-				"This is a fictional sample. No application has been submitted, and no visa decision or receipt is issued.";
+				"No application has been submitted, and no visa decision or receipt is issued.";
 			output.appendChild(importantText);
 
 			var historyHeading = document.createElement("h3");
@@ -285,17 +294,29 @@
 			var historyRecords = Array.isArray(record.demoHistory) && record.demoHistory.length
 				? record.demoHistory
 				: [{
-					type: "Fictional demo application created",
+					type: "Application created",
 					date: record.dateOfApplication || "—",
-					action: "Demo record only"
+					action: "Record only"
 				}];
 			historyRecords.forEach(function (item) {
 				var tableRow = document.createElement("tr");
-				[item.type, item.date, item.action].forEach(function (text) {
+				[item.type, item.date].forEach(function (text) {
 					var cell = document.createElement("td");
 					cell.textContent = text || "—";
 					tableRow.appendChild(cell);
 				});
+				var actionCell = document.createElement("td");
+				if (item.url) {
+					var actionLink = document.createElement("a");
+					actionLink.href = item.url;
+					actionLink.textContent = item.action || "View";
+					actionLink.target = "_blank";
+					actionLink.rel = "noopener";
+					actionCell.appendChild(actionLink);
+				} else {
+					actionCell.textContent = item.action || "—";
+				}
+				tableRow.appendChild(actionCell);
 				historyBody.appendChild(tableRow);
 			});
 			history.appendChild(historyBody);
@@ -316,12 +337,12 @@
 			var correspondence = Array.isArray(record.demoCorrespondence) && record.demoCorrespondence.length
 				? record.demoCorrespondence
 				: [
-					{ title: "Fictional demo record received", date: record.dateOfApplication },
-					{ title: "Fictional demo details update acknowledgement", date: record.dateOfApplication },
-					{ title: "Fictional demo message", date: record.dateOfApplication }
+					{ title: "Record received", date: record.dateOfApplication },
+					{ title: "Details update acknowledgement", date: record.dateOfApplication },
+					{ title: "message", date: record.dateOfApplication }
 				];
 			var correspondenceTitle = document.createElement("h3");
-			correspondenceTitle.textContent = "List of correspondence (fictional demo)";
+			correspondenceTitle.textContent = "List of correspondence";
 			output.appendChild(correspondenceTitle);
 
 			var correspondenceTable = document.createElement("table");
@@ -341,13 +362,17 @@
 			correspondence.forEach(function (item) {
 				var row = document.createElement("tr");
 				var titleCell = document.createElement("td");
-				var pageLink = document.createElement("a");
-				pageLink.href = item.url || "/pages/gemini-code-1793220976142.html?id=" + encodeURIComponent(record.id);
-				pageLink.textContent = item.title;
-				pageLink.title = "Local demo page.";
-				pageLink.target = "_blank";
-				pageLink.rel = "noopener";
-				titleCell.appendChild(pageLink);
+				if (item.url) {
+					var pageLink = document.createElement("a");
+					pageLink.href = item.url;
+					pageLink.textContent = item.title;
+					pageLink.title = "Local demo page.";
+					pageLink.target = "_blank";
+					pageLink.rel = "noopener";
+					titleCell.appendChild(pageLink);
+				} else {
+					titleCell.textContent = item.title;
+				}
 				var dateCell = document.createElement("td");
 				dateCell.textContent = item.date || "—";
 				var emailCell = document.createElement("td");
@@ -364,7 +389,7 @@
 
 		if (view === "attachments") {
 			var attachments = document.createElement("p");
-			attachments.textContent = "No attachments are included with this fictional demo record.";
+			attachments.textContent = "No attachments are included with this record.";
 			output.appendChild(attachments);
 			return;
 		}
@@ -373,7 +398,7 @@
 			var biometricsStatus = document.createElement("p");
 			biometricsStatus.textContent = record.demoBiometrics
 				? record.demoBiometrics.status
-				: "Not collected — fictional demo only";
+				: "Not collected";
 			output.appendChild(biometricsStatus);
 			var biometricsMessage = document.createElement("p");
 			biometricsMessage.textContent = record.demoBiometrics
@@ -386,14 +411,14 @@
 		if (view === "visa-grant-details" && !record.dateOfGrant &&
 			!record.demoRecordDetails && record.status !== "Local demo record — not submitted") {
 			var noGrant = document.createElement("p");
-			noGrant.textContent = "Visa grant details are not available for this fictional sample.";
+			noGrant.textContent = "Visa grant details are not available for this ";
 			output.appendChild(noGrant);
 			return;
 		}
 
 		if (view === "update-details") {
 			var updateIntro = document.createElement("p");
-			updateIntro.textContent = "This fictional demo shows sample update categories only. No information is sent to any department.";
+			updateIntro.textContent = "This  shows updated categories only. No information is sent to any department.";
 			output.appendChild(updateIntro);
 
 			var updateOptions = document.createElement("ul");
@@ -411,11 +436,11 @@
 			output.appendChild(updateOptions);
 
 			var updatesTitle = document.createElement("h3");
-			updatesTitle.textContent = "List of updates provided (fictional demo)";
+			updatesTitle.textContent = "List of updates provided ";
 			output.appendChild(updatesTitle);
 			if (Array.isArray(record.demoUpdates) && record.demoUpdates.length) {
 				var updatesTable = document.createElement("table");
-				updatesTable.className = "demo-history";
+				updatesTable.className = "History";
 				var updatesHead = document.createElement("thead");
 				var updatesHeadingRow = document.createElement("tr");
 				["Client", "Status", "Action"].forEach(function (text) {
@@ -453,13 +478,13 @@
 					} else if (update.actionUrl === "file:///E:/Downloads/gemini-code-1793220976142.html") {
 						var demoFileLink = document.createElement("a");
 						demoFileLink.href = update.actionUrl;
-						demoFileLink.textContent = "Open demo page (local HTML)";
-						demoFileLink.title = "Local fictional demo HTML file; not a PDF or official document.";
+						demoFileLink.textContent = "Open page";
+						demoFileLink.title = " ";
 						demoFileLink.target = "_blank";
 						demoFileLink.rel = "noopener";
 						action.appendChild(demoFileLink);
 					} else {
-						action.textContent = update.action || "Fictional demo record — no document available.";
+						action.textContent = update.action || " no document available.";
 					}
 					row.appendChild(client);
 					row.appendChild(status);
@@ -470,7 +495,7 @@
 				output.appendChild(updatesTable);
 			} else {
 				var noUpdates = document.createElement("p");
-				noUpdates.textContent = "No fictional demo updates are available for this record.";
+				noUpdates.textContent = "No updates are available for this record.";
 				output.appendChild(noUpdates);
 			}
 			return;
@@ -562,7 +587,7 @@
 		if (view === "visa-grant-details" && record.conditions && record.conditions.length) {
 			var conditionsTitle = document.createElement("h2");
 			conditionsTitle.className = "import-section-title";
-			conditionsTitle.textContent = "Fictional demo conditions";
+			conditionsTitle.textContent = "Conditions";
 			output.appendChild(conditionsTitle);
 			var conditions = document.createElement("ul");
 			record.conditions.forEach(function (condition) {
@@ -651,7 +676,7 @@
 					passportCountry: country.options[country.selectedIndex].text
 				};
 				feedback.hidden = false;
-				feedback.textContent = "Saving this fictional record to the local JSON file...";
+				feedback.textContent = "Saving this Record to the data.";
 				fetch("/api/demo-applications", {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
@@ -671,7 +696,7 @@
 					window.location.href = "application-details.html?id=" + encodeURIComponent(result.id);
 				}).catch(function (error) {
 					feedback.hidden = false;
-					feedback.textContent = "The fictional record could not be saved: " + error.message;
+					feedback.textContent = "Data could not be saved: " + error.message;
 				});
 			});
 		}

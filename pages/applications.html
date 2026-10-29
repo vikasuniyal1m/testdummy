@@ -289,7 +289,96 @@
 				</div>
 
 				<div id="MyAppsResultsPanel" class="wc-panel">
-					<div class="wc-content">No results found</div>
+					<div id="noResultsFallback" class="wc-content" style="display: none;">No results found</div>
+
+					<!-- Dynamic Data Layout Container -->
+					<div id="dynamicDataPanel" class="wc-content" style="display: block;">
+						<!-- Top Pagination Controls -->
+						<div class="wc-pagination-bar" style="display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 13px;">
+							<span class="wc-results-count">1 - 1 of 1 results</span>
+							<span>Page</span>
+							<select class="wc-dropdown-page" style="padding: 2px 4px;">
+								<option value="1" selected>1</option>
+							</select>
+							<div class="wc-pagination-buttons" style="display: inline-flex; gap: 2px;">
+								<button type="button" class="wc-button" disabled style="background-color: #92c0eb; color: #fff; border: none; padding: 2px 8px; border-radius: 3px;">&laquo;</button>
+								<button type="button" class="wc-button" disabled style="background-color: #92c0eb; color: #fff; border: none; padding: 2px 8px; border-radius: 3px;">&lt;</button>
+								<button type="button" class="wc-button" disabled style="background-color: #92c0eb; color: #fff; border: none; padding: 2px 8px; border-radius: 3px;">&gt;</button>
+								<button type="button" class="wc-button" disabled style="background-color: #92c0eb; color: #fff; border: none; padding: 2px 8px; border-radius: 3px;">&raquo;</button>
+							</div>
+						</div>
+
+						<!-- Main Application Result Card Block -->
+						<div class="wc-app-card" style="border-top: 2px solid #e07010; border-bottom: 1px solid #ccc; background-color: #f9f9f9; padding: 15px; margin-bottom: 15px;">
+							<!-- Header Info -->
+							<div class="wc-app-card-header" style="margin-bottom: 15px;">
+								<div class="wc-app-title" style="font-size: 16px; color: #004488; font-weight: bold;">
+									<span class="wc-data-bind" data-key="applicantName"></span> 
+									(<span class="wc-data-bind" data-key="dateOfBirth"></span>)
+								</div>
+								<div class="wc-data-bind wc-app-subtitle" data-key="stream" style="font-size: 15px; font-weight: normal; margin-top: 2px; color: #333;"></div>
+								<div class="wc-data-bind wc-app-status" data-key="applicationStatus" style="font-size: 18px; font-weight: bold; margin-top: 4px; color: #000;"></div>
+							</div>
+
+							<hr style="border: 0; border-top: 1px solid #e0e0e0; margin: 10px 0;">
+
+							<!-- Grid Metadata -->
+							<div class="wc-app-card-body" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px; margin-bottom: 15px;">
+								<div>
+									<div style="display: flex;">
+										<span style="width: 120px; color: #333;">Reference No</span>
+										<span class="wc-data-bind" data-key="referenceNumber" style="font-weight: 500;"></span>
+									</div>
+									<div style="display: flex; margin-top: 8px;">
+										<span style="width: 120px; color: #333;">Type</span>
+										<span class="wc-data-bind" data-key="applicationType" style="font-weight: 500;"></span>
+									</div>
+								</div>
+								<div>
+									<div style="display: flex;">
+										<span style="width: 120px; color: #333;">Last updated</span>
+										<span class="wc-data-bind" data-key="dateOfGrant" style="font-weight: 500;"></span>
+									</div>
+									<div style="display: flex; margin-top: 8px;">
+										<span style="width: 120px; color: #333;">Date submitted</span>
+										<span class="wc-data-bind" data-key="dateSubmitted" style="font-weight: 500;"></span>
+									</div>
+								</div>
+							</div>
+
+							<hr style="border: 0; border-top: 1px dashed #cccccc; margin: 10px 0;">
+
+							<!-- Action Buttons Bar -->
+							<div class="wc-app-card-footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: 5px;">
+								<div>
+									<button type="button" class="wc-button" style="background-color: #0072ce; color: #ffffff; border: none; padding: 6px 14px; border-radius: 12px; font-size: 12px; cursor: pointer;">
+										<i class="fa fa-folder-open" aria-hidden="true" style="margin-right: 4px;"></i> View details
+									</button>
+								</div>
+								<div class="wc-action-links" style="font-size: 13px; display: flex; gap: 15px;">
+									<a href="#" style="color: #004488; text-decoration: underline;"><i class="fa fa-files-o" aria-hidden="true"></i> Copy</a>
+									<a href="#" style="color: #004488; text-decoration: underline;"><i class="fa fa-user-plus" aria-hidden="true"></i> Update details</a>
+									<a href="#" style="color: #004488; text-decoration: underline;"><i class="fa fa-trash-o" aria-hidden="true"></i> Remove</a>
+									<a href="#" style="color: #004488; text-decoration: underline;"><i class="fa fa-share" aria-hidden="true"></i> Share</a>
+								</div>
+							</div>
+						</div>
+
+						<!-- Bottom Pagination Controls -->
+						<div class="wc-pagination-bar" style="display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 10px; font-size: 13px;">
+							<span class="wc-results-count">1 - 1 of 1 results</span>
+							<span>Page</span>
+							<select class="wc-dropdown-page" style="padding: 2px 4px;">
+								<option value="1" selected>1</option>
+							</select>
+							<div class="wc-pagination-buttons" style="display: inline-flex; gap: 2px;">
+								<button type="button" class="wc-button" disabled style="background-color: #92c0eb; color: #fff; border: none; padding: 2px 8px; border-radius: 3px;">&laquo;</button>
+								<button type="button" class="wc-button" disabled style="background-color: #92c0eb; color: #fff; border: none; padding: 2px 8px; border-radius: 3px;">&lt;</button>
+								<button type="button" class="wc-button" disabled style="background-color: #92c0eb; color: #fff; border: none; padding: 2px 8px; border-radius: 3px;">&gt;</button>
+								<button type="button" class="wc-button" disabled style="background-color: #92c0eb; color: #fff; border: none; padding: 2px 8px; border-radius: 3px;">&raquo;</button>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -307,5 +396,54 @@
 	</div>
 </footer>
 </form>
+
+<script>
+// JSON Data Injector Script based on your exact demo-applications.json structure
+function renderApplicationData(jsonData) {
+    const fallbackEl = document.getElementById('noResultsFallback');
+    const dynamicPanelEl = document.getElementById('dynamicDataPanel');
+
+    // Check if applications array exists and has items
+    if (!jsonData || !jsonData.applications || jsonData.applications.length === 0) {
+        fallbackEl.style.display = 'block';
+        dynamicPanelEl.style.display = 'none';
+        return;
+    }
+
+    fallbackEl.style.display = 'none';
+    dynamicPanelEl.style.display = 'block';
+
+    // Pick the first application item from the array
+    const appData = jsonData.applications[0];
+
+    // Fallback for missing dateSubmitted in JSON if required
+    appData.dateSubmitted = "22 Dec 2023";
+
+    document.querySelectorAll('.wc-data-bind').forEach(el => {
+        const key = el.getAttribute('data-key');
+        if (appData[key] !== undefined) {
+            el.textContent = appData[key];
+        }
+    });
+}
+
+// Fetching real JSON data from your path
+document.addEventListener("DOMContentLoaded", function() {
+    fetch('assets/data/demo-applications.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("HTTP error " + response.status);
+            }
+            return response.json();
+        })
+        .then(jsonData => {
+            renderApplicationData(jsonData);
+        })
+        .catch(error => {
+            console.error("Error loading JSON:", error);
+            renderApplicationData(null);
+        });
+});
+</script>
 </body>
 </html>

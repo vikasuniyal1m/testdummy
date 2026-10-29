@@ -133,7 +133,7 @@ class DemoRequestHandler(SimpleHTTPRequestHandler):
                 "passportNumber": passport_number,
                 "passportCountryCode": payload["passportCountryCode"].strip(),
                 "passportCountry": passport_country,
-                "stream": "Fictional local demo",
+#                 "stream": "Fictional local demo",
                 "demoRecordDetails": {
                     "applicantName": applicant_name,
                     "grantDate": "Not issued — local demo only",

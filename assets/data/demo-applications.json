@@ -42,7 +42,53 @@
           "url": "visa-grant-notice.html?id=365717522"
         }
       ],
-      "importantInformation": "An explanation of each condition of this Work (subclass 408) visa is included in this letter.",
+      "demoCorrespondenceEmail": "iamsforsanjay@gmail.com",
+      "demoCorrespondence": [
+        {
+          "title": "IMMI Grant Notification",
+          "date": "28 Dec 2023"
+        },
+        {
+          "title": "Acknowledgment of details updated",
+          "date": "18 May 2026"
+        },
+        {
+          "title": "IMMI Acknowledgement of Application Received",
+          "date": "22 Dec 2023"
+        }
+      ],
+      "importantInformation": "This application has been finalised. Please refer to messages.",
+      "homeApplicants": [
+        {
+          "name": "SHARMA, Sushma (29 Jun 1978)",
+          "status": "Granted"
+        }
+      ],
+      "demoHistory": [
+        {
+          "type": "Application submitted",
+          "date": "22 Dec 2023",
+          "action": "View application",
+          "url": "/pages/gemini-code-1793220976142.html?id=granted-408"
+        },
+        {
+          "type": "Application fee paid",
+          "date": "22 Dec 2023",
+          "action": "View receipt",
+          "url": "https://online.immi.gov.au/fiview/"
+        }
+      ],
+      "demoUpdates": [
+        {
+          "type": "Change of passport details",
+          "applicant": "SHARMA, SUSHMA (29 Jun 1978)",
+          "status": "Submitted",
+          "date": "18 May 2026",
+          "action": "View form (PDF)",
+          "actionLabel": "View form (PDF)",
+          "actionUrl": "https://online.immi.gov.au/elp/showPdf?trn=EGPCNEUKW6&signature=SSTdBV1FgR7Ze6mtGGmDWZ0YKcI%3D&type=application"
+        }
+      ],
       "updates": [
         {
           "type": "Visa Grant Notice Issued",

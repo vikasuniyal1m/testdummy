@@ -23,7 +23,7 @@
 
 <section id="mainpanel_parentSection" class="wc-section">
 	<header id="mainpanel_parentSection_0" class="wc-decoratedlabel">
-		<h1 id="demo-application-heading" class="wc-labelbody wc_dlbl_seg">Fictional application details</h1>
+		<h1 id="demo-application-heading" class="wc-labelbody wc_dlbl_seg">Application Details</h1>
 	</header>
 	<div id="mainpanel_parentSection_1" class="wc-panel">
 		<div class="wc-content demo-detail-layout">
@@ -42,7 +42,7 @@
 				</nav>
 			</aside>
 			<div class="demo-detail-content">
-				<div class="import-details-note" id="demo-detail-output" aria-live="polite">Loading fictional demo data...</div>
+				<div class="import-details-note" id="demo-detail-output" aria-live="polite">Loading data...</div>
 			</div>
 			<div class="import-actions" style="margin-top: 15px;">
 				<a class="wc-button" href="applications.html">Back to My applications</a>
@@ -152,7 +152,6 @@
   function processAppData(data) {
     const profileElem = document.getElementById('headerProfileText') || document.getElementById('_0a0a0-body');
     
-    // Exact ID match with fallback to first item
     currentAppData = (data.applications || []).find(app => app.id === selectedAppId) || data.applications[0];
     
     if (profileElem && currentAppData) {
@@ -171,6 +170,81 @@
     if (!outputDiv || !currentAppData) return;
 
     if (view === 'home') {
+      if (Array.isArray(currentAppData.homeApplicants)) {
+        outputDiv.textContent = '';
+
+        const homeHeading = document.createElement('h2');
+        homeHeading.textContent = 'Application home';
+        outputDiv.appendChild(homeHeading);
+
+        const applicationStatus = document.createElement('p');
+        const statusLabel = document.createElement('strong');
+        statusLabel.textContent = 'Application status: ';
+        applicationStatus.appendChild(statusLabel);
+        applicationStatus.appendChild(document.createTextNode(currentAppData.applicationStatus || currentAppData.status || ''));
+        outputDiv.appendChild(applicationStatus);
+
+        const applicantsHeading = document.createElement('h3');
+        applicantsHeading.textContent = 'Applicants';
+        outputDiv.appendChild(applicantsHeading);
+        const applicantsList = document.createElement('ul');
+        currentAppData.homeApplicants.forEach(applicant => {
+          const item = document.createElement('li');
+          item.textContent = `${applicant.name} - ${applicant.status}`;
+          applicantsList.appendChild(item);
+        });
+        outputDiv.appendChild(applicantsList);
+
+        const informationHeading = document.createElement('h3');
+        informationHeading.textContent = 'Important information';
+        outputDiv.appendChild(informationHeading);
+        const information = document.createElement('p');
+        information.textContent = currentAppData.importantInformation || '';
+        outputDiv.appendChild(information);
+
+        const historyHeading = document.createElement('h3');
+        historyHeading.textContent = 'Application history';
+        outputDiv.appendChild(historyHeading);
+        const historyTable = document.createElement('table');
+        historyTable.className = 'demo-history';
+        const historyHead = document.createElement('thead');
+        const headingRow = document.createElement('tr');
+        ['Type', 'Date', 'Action'].forEach(text => {
+          const cell = document.createElement('th');
+          cell.scope = 'col';
+          cell.textContent = text;
+          headingRow.appendChild(cell);
+        });
+        historyHead.appendChild(headingRow);
+        historyTable.appendChild(historyHead);
+
+        const historyBody = document.createElement('tbody');
+        (currentAppData.demoHistory || []).forEach(entry => {
+          const row = document.createElement('tr');
+          [entry.type, entry.date].forEach(text => {
+            const cell = document.createElement('td');
+            cell.textContent = text || '—';
+            row.appendChild(cell);
+          });
+          const actionCell = document.createElement('td');
+          if (entry.url) {
+            const actionLink = document.createElement('a');
+            actionLink.href = entry.url;
+            actionLink.textContent = entry.action || 'View';
+            actionLink.target = '_blank';
+            actionLink.rel = 'noopener';
+            actionCell.appendChild(actionLink);
+          } else {
+            actionCell.textContent = entry.action || '—';
+          }
+          row.appendChild(actionCell);
+          historyBody.appendChild(row);
+        });
+        historyTable.appendChild(historyBody);
+        outputDiv.appendChild(historyTable);
+        return;
+      }
+
       outputDiv.innerHTML = `
         <h3>Application Type: ${currentAppData.applicationType || 'Visa application'}</h3>
         <p><strong>Applicant Name:</strong> ${currentAppData.applicantName}</p>
@@ -184,18 +258,141 @@
         </div>
       `;
     } else if (view === 'messages') {
-      outputDiv.innerHTML = `
-        <h3>Messages</h3>
-        <p>Correspondence for this application is currently being sent to the Primary Applicant at the following email address: ${currentAppData.demoCorrespondenceEmail || 'demo@example.test'}</p>
-        <p>Please check your spam filter if you have not received any correspondence.</p>
-        <h3 style="margin-top:20px;">Correspondence</h3>
-        ${(currentAppData.demoCorrespondence || []).map(c => `
-          <div style="margin-top:8px;">
-            <a href="${c.url || 'gemini-code-1793220976142.html?id=' + currentAppData.id}" style="color:#1e40af; text-decoration:underline;">${c.title}</a> (${c.date || '—'})
-          </div>
-        `).join('') || '<p>No correspondence available.</p>'}
-      `;
+      outputDiv.textContent = '';
+      const messagesHeading = document.createElement('h3');
+      messagesHeading.textContent = 'Messages';
+      outputDiv.appendChild(messagesHeading);
+      const correspondenceNotice = document.createElement('p');
+      correspondenceNotice.textContent = `Correspondence for this application is currently being sent to the Primary Applicant at the following email address: ${currentAppData.demoCorrespondenceEmail || 'demo@example.test'}`;
+      outputDiv.appendChild(correspondenceNotice);
+      const spamNotice = document.createElement('p');
+      spamNotice.textContent = 'Please check your spam filter if you have not received any correspondence.';
+      outputDiv.appendChild(spamNotice);
+
+      const correspondenceHeading = document.createElement('h3');
+      correspondenceHeading.style.marginTop = '20px';
+      correspondenceHeading.textContent = 'List of correspondence';
+      outputDiv.appendChild(correspondenceHeading);
+      const correspondenceTable = document.createElement('table');
+      correspondenceTable.className = 'demo-history';
+      const correspondenceHead = document.createElement('thead');
+      const headingRow = document.createElement('tr');
+      ['Correspondence title', 'Date sent', 'Email'].forEach(text => {
+        const cell = document.createElement('th');
+        cell.scope = 'col';
+        cell.textContent = text;
+        headingRow.appendChild(cell);
+      });
+      correspondenceHead.appendChild(headingRow);
+      correspondenceTable.appendChild(correspondenceHead);
+
+      const correspondenceBody = document.createElement('tbody');
+      (currentAppData.demoCorrespondence || []).forEach(correspondence => {
+        const row = document.createElement('tr');
+        const titleCell = document.createElement('td');
+        if (correspondence.url) {
+          const link = document.createElement('a');
+          link.href = correspondence.url;
+          link.textContent = correspondence.title;
+          titleCell.appendChild(link);
+        } else {
+          titleCell.textContent = correspondence.title;
+        }
+        const dateCell = document.createElement('td');
+        dateCell.textContent = correspondence.date || '—';
+        const emailCell = document.createElement('td');
+        emailCell.textContent = currentAppData.demoCorrespondenceEmail || 'demo@example.test';
+        row.append(titleCell, dateCell, emailCell);
+        correspondenceBody.appendChild(row);
+      });
+      correspondenceTable.appendChild(correspondenceBody);
+      outputDiv.appendChild(correspondenceTable);
     } else if (view === 'update-details') {
+      if (currentAppData.id === 'granted-408') {
+        outputDiv.textContent = '';
+
+        const updateHeading = document.createElement('h2');
+        updateHeading.textContent = 'Update details';
+        outputDiv.appendChild(updateHeading);
+
+        const updateHelp = document.createElement('a');
+        updateHelp.href = 'https://immi.homeaffairs.gov.au/help-text/eplus/Pages/elp-h1315.aspx';
+        updateHelp.textContent = 'Help';
+        outputDiv.appendChild(updateHelp);
+
+        const updateIntro = document.createElement('p');
+        updateIntro.textContent = 'You can provide updated information to the department using the links below.';
+        outputDiv.appendChild(updateIntro);
+
+        const updateOptions = document.createElement('ul');
+        [
+          'Change of address details',
+          'Change of contact telephone numbers',
+          'Change of email address details',
+          'Change of passport details',
+          'Request to cancel a temporary resident visa'
+        ].forEach(text => {
+          const item = document.createElement('li');
+          item.textContent = text;
+          updateOptions.appendChild(item);
+        });
+        outputDiv.appendChild(updateOptions);
+
+        const updatesHeading = document.createElement('h3');
+        updatesHeading.textContent = 'List of updates provided';
+        outputDiv.appendChild(updatesHeading);
+
+        const updatesSection = document.createElement('details');
+        updatesSection.open = true;
+        const updatesSummary = document.createElement('summary');
+        updatesSummary.textContent = 'Update';
+        updatesSection.appendChild(updatesSummary);
+
+        const updatesTable = document.createElement('table');
+        updatesTable.className = 'demo-history';
+        const updatesHead = document.createElement('thead');
+        const updatesHeaderRow = document.createElement('tr');
+        ['Client', 'Status', 'Action'].forEach(text => {
+          const cell = document.createElement('th');
+          cell.scope = 'col';
+          cell.textContent = text;
+          updatesHeaderRow.appendChild(cell);
+        });
+        updatesHead.appendChild(updatesHeaderRow);
+        updatesTable.appendChild(updatesHead);
+
+        const updatesBody = document.createElement('tbody');
+        (currentAppData.demoUpdates || []).forEach(update => {
+          const row = document.createElement('tr');
+          const clientCell = document.createElement('td');
+          const updateType = document.createElement('strong');
+          updateType.textContent = update.type;
+          clientCell.appendChild(updateType);
+          clientCell.appendChild(document.createElement('br'));
+          clientCell.appendChild(document.createTextNode(update.applicant));
+
+          const statusCell = document.createElement('td');
+          statusCell.textContent = update.status;
+          statusCell.appendChild(document.createElement('br'));
+          statusCell.appendChild(document.createTextNode(update.date));
+
+          const actionCell = document.createElement('td');
+          const actionLink = document.createElement('a');
+          actionLink.href = update.actionUrl;
+          actionLink.textContent = update.actionLabel || update.action;
+          actionLink.target = '_blank';
+          actionLink.rel = 'noopener';
+          actionCell.appendChild(actionLink);
+
+          row.append(clientCell, statusCell, actionCell);
+          updatesBody.appendChild(row);
+        });
+        updatesTable.appendChild(updatesBody);
+        updatesSection.appendChild(updatesTable);
+        outputDiv.appendChild(updatesSection);
+        return;
+      }
+
       let updatesHtml = (currentAppData.demoUpdates || []).map(u => `
         <div style="margin-bottom:10px;">
           <p style="margin-bottom:4px;">${u.date} - ${u.type} (${u.status})</p>
