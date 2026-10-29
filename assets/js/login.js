@@ -3,8 +3,11 @@
  * Username: demo  |  Password: demo123
  */
 (function () {
-	var USER = "demo";
-	var PASS = "demo123";
+//	var USER = "INFO@CPCONSULENZA.COM";
+//	var PASS = "CPCONSULENZA@1221";
+
+		var USER = "demo";
+    	var PASS = "demo123";
 
 	document.addEventListener("DOMContentLoaded", function () {
 		var user = document.getElementById("username");

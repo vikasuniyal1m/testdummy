@@ -289,10 +289,10 @@
 				</div>
 
 				<div id="MyAppsResultsPanel" class="wc-panel">
-					<div id="noResultsFallback" class="wc-content" style="display: none;">No results found</div>
+					<div id="noResultsFallback" class="wc-content" style="display: block;">No results found</div>
 
-					<!-- Dynamic Data Layout Container -->
-					<div id="dynamicDataPanel" class="wc-content" style="display: block;">
+					<!-- Dynamic Data Layout Container (Initially Blank) -->
+					<div id="dynamicDataPanel" class="wc-content" style="display: none;">
 						<!-- Top Pagination Controls -->
 						<div class="wc-pagination-bar" style="display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 13px;">
 							<span class="wc-results-count">1 - 1 of 1 results</span>
@@ -390,7 +390,7 @@
 		<ul class="wc-listlayout wc-align-left wc-listlayout-type-flat wc-listlayout-separator-bar">
 			<li><a href="https://www.homeaffairs.gov.au/access-and-accountability/using-our-website/accessibility" target="_blank" rel="noopener noreferrer">Accessibility</a></li>
 			<li><a href="https://www.homeaffairs.gov.au/access-and-accountability/using-our-website/online-security" target="_blank" rel="noopener noreferrer">Online Security</a></li>
-			<li><a href="https://www.homeaffairs.gov.au/access-and-accountability/our-commitments/privacy" target="_blank" rel="noopener noreferrer">Privacy</a></li>
+			<li><a href="https://www.homeaffairs.gov.au/access-data-and-accountability/our-commitments/privacy" target="_blank" rel="noopener noreferrer">Privacy</a></li>
 			<li><a href="https://www.homeaffairs.gov.au/access-and-accountability/using-our-website/copyright-and-disclaimer" target="_blank" rel="noopener noreferrer">Copyright &amp; Disclaimer</a></li>
 		</ul>
 	</div>
@@ -398,13 +398,92 @@
 </form>
 
 <script>
-// JSON Data Injector Script based on your exact demo-applications.json structure
+window.appData = {
+  "notice": "OFFICIAL VISA GRANT & APPLICATION RECORDS",
+  "profile": { "displayName": "Gurpreet Chhabra" },
+  "applications": [
+    {
+      "id": "granted-408",
+      "applicantName": "CHHABRA, Gurpreet",
+      "applicantStatus": "Granted",
+      "dateOfBirth": "27 November 1990",
+      "applicationType": "Work (subclass 408)",
+      "status": "Granted",
+      "applicationStatus": "Finalised",
+      "referenceNumber": "1069558350291",
+      "applicationId": "365717522",
+      "transactionReference": "EGPBMEQJQP",
+      "dateOfGrant": "23/10/2026",
+      "mustNotArriveAfter": "23 October 2029",
+      "lengthOfStay": "3 month(s) from the date of each arrival",
+      "travel": "Multiple entries",
+      "passportNumber": "R7814049",
+      "passportCountryCode": "IND",
+      "passportCountry": "INDIA",
+      "stream": "Work",
+      "conditions": [
+        "8501 - Maintain health insurance",
+        "8107 - Work limitation",
+        "8303 - Activity limitation"
+      ],
+      "messages": [
+        {
+          "date": "23/10/2026",
+          "subject": "Visa application approved and granted",
+          "body": "We have granted you a work (subclass 408) visa on 23/10/2026."
+        }
+      ],
+      "correspondence": [
+        {
+          "title": "Notification of Grant of Work Visa (408)",
+          "date": "23/10/2026",
+          "url": "visa-grant-notice.html?id=365717522"
+        }
+      ],
+      "demoCorrespondenceEmail": "iamsforsanjay@gmail.com",
+      "demoCorrespondence": [
+        { "title": "IMMI Grant Notification", "date": "23/10/2026" },
+        { "title": "Acknowledgment of details updated", "date": "12/10/2026" },
+        { "title": "IMMI Acknowledgement of Application Received", "date": "12/10/2026" }
+      ],
+      "importantInformation": "This application has been finalised. Please refer to messages.",
+      "homeApplicants": [
+        { "name": "CHHABRA, Gurpreet", "status": "Granted" }
+      ],
+      "demoHistory": [
+        {
+          "type": "Application submitted",
+          "date": "12/10/2026",
+          "action": "View application",
+          "url": "/pages/gemini-code-1793220976142.html?id=granted-408"
+        },
+        {
+          "type": "Application fee paid",
+          "date": "12/10/2026",
+          "action": "View receipt",
+          "url": "https://online.immi.gov.au/fiview/"
+        }
+      ],
+      "demoUpdates": [],
+      "updates": [
+        {
+          "type": "Visa Grant Notice Issued",
+          "applicant": "CHHABRA, Gurpreet",
+          "status": "Completed",
+          "date": "23/10/2026",
+          "action": "Official grant notification generated",
+          "actionUrl": "visa-grant-notice.html?id=365717522"
+        }
+      ]
+    }
+  ]
+};
+
 function renderApplicationData(jsonData) {
     const fallbackEl = document.getElementById('noResultsFallback');
     const dynamicPanelEl = document.getElementById('dynamicDataPanel');
 
-    // Check if applications array exists and has items
-    if (!jsonData || !jsonData.applications || jsonData.applications.length === 0) {
+    if (!jsonData || !jsonData.applications || jsonData.applications.length === 0 || !jsonData.applications[0].applicantName) {
         fallbackEl.style.display = 'block';
         dynamicPanelEl.style.display = 'none';
         return;
@@ -413,11 +492,11 @@ function renderApplicationData(jsonData) {
     fallbackEl.style.display = 'none';
     dynamicPanelEl.style.display = 'block';
 
-    // Pick the first application item from the array
     const appData = jsonData.applications[0];
-
-    // Fallback for missing dateSubmitted in JSON if required
-    appData.dateSubmitted = "22 Dec 2023";
+    
+    if (appData.demoHistory && appData.demoHistory.length > 0) {
+        appData.dateSubmitted = appData.demoHistory[0].date;
+    }
 
     document.querySelectorAll('.wc-data-bind').forEach(el => {
         const key = el.getAttribute('data-key');
@@ -427,22 +506,8 @@ function renderApplicationData(jsonData) {
     });
 }
 
-// Fetching real JSON data from your path
 document.addEventListener("DOMContentLoaded", function() {
-    fetch('assets/data/demo-applications.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("HTTP error " + response.status);
-            }
-            return response.json();
-        })
-        .then(jsonData => {
-            renderApplicationData(jsonData);
-        })
-        .catch(error => {
-            console.error("Error loading JSON:", error);
-            renderApplicationData(null);
-        });
+    renderApplicationData(window.appData);
 });
 </script>
 </body>

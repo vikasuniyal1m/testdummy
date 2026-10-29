@@ -1,0 +1,104 @@
+window.appData = {
+  "notice": "OFFICIAL VISA GRANT & APPLICATION RECORDS",
+  "profile": {
+    "displayName": "Gurpreet Chhabra"
+  },
+  "applications": [
+    {
+      "id": "granted-408",
+      "applicantName": "Gurpreet Chhabra",
+      "applicantStatus": "Granted",
+      "dateOfBirth": "27 November 1990",
+      "applicationType": "Work (subclass 408)",
+      "status": "Granted",
+      "applicationStatus": "Granted",
+      "referenceNumber": "1069558350291",
+      "applicationId": "365717522",
+      "transactionReference": "EGPBMEQJQP",
+      "dateOfGrant": "23 October 2026",
+      "mustNotArriveAfter": "23 October 2029",
+      "lengthOfStay": "3 month(s) from the date of each arrival",
+      "travel": "Multiple entries",
+      "passportNumber": "R7814049",
+      "passportCountryCode": "IND",
+      "passportCountry": "INDIA",
+      "stream": "Work",
+      "conditions": [
+        "8501 - Maintain health insurance",
+        "8107 - Work limitation",
+        "8303 - Activity limitation"
+      ],
+      "messages": [
+        {
+          "date": "23 October 2026",
+          "subject": "Visa application approved and granted",
+          "body": "We have granted you a work (subclass 408) visa on 23 October 2026."
+        }
+      ],
+      "correspondence": [
+        {
+          "title": "Notification of Grant of Work Visa (Subclass 408)",
+          "date": "23 October 2026",
+          "url": "visa-grant-notice.html?id=365717522"
+        }
+      ],
+      "demoCorrespondenceEmail": "iamsforsanjay@gmail.com",
+      "demoCorrespondence": [
+        {
+          "title": "IMMI Grant Notification",
+          "date": "28 Dec 2023"
+        },
+        {
+          "title": "Acknowledgment of details updated",
+          "date": "18 May 2026"
+        },
+        {
+          "title": "IMMI Acknowledgement of Application Received",
+          "date": "22 Dec 2023"
+        }
+      ],
+      "importantInformation": "This application has been finalised. Please refer to messages.",
+      "homeApplicants": [
+        {
+          "name": "SHARMA, Sushma (29 Jun 1978)",
+          "status": "Granted"
+        }
+      ],
+      "demoHistory": [
+        {
+          "type": "Application submitted",
+          "date": "22 Dec 2023",
+          "action": "View application",
+          "url": "/pages/gemini-code-1793220976142.html?id=granted-408"
+        },
+        {
+          "type": "Application fee paid",
+          "date": "22 Dec 2023",
+          "action": "View receipt",
+          "url": "https://online.immi.gov.au/fiview/"
+        }
+      ],
+      "demoUpdates": [
+        {
+          "type": "Change of passport details",
+          "applicant": "SHARMA, SUSHMA (29 Jun 1978)",
+          "status": "Submitted",
+          "date": "18 May 2026",
+          "action": "View form (PDF)",
+          "actionLabel": "View form (PDF)",
+          "actionUrl": "https://online.immi.gov.au/elp/showPdf?trn=EGPCNEUKW6&signature=SSTdBV1FgR7Ze6mtGGmDWZ0YKcI%3D&type=application"
+        }
+      ],
+      "updates": [
+        {
+          "type": "Visa Grant Notice Issued",
+          "applicant": "Gurpreet Chhabra",
+          "status": "Completed",
+          "date": "23 October 2026",
+          "action": "Official grant notification generated",
+          "actionUrl": "visa-grant-notice.html?id=365717522"
+        }
+      ]
+    }
+  ]
+};
