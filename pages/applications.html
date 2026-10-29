@@ -327,7 +327,7 @@
 								<div>
 									<div style="display: flex;">
 										<span style="width: 120px; color: #333;">Reference No</span>
-										<span class="wc-data-bind" data-key="referenceNumber" style="font-weight: 500;"></span>
+										<span class="wc-data-bind" data-key="transactionReference" style="font-weight: 500;"></span>
 									</div>
 									<div style="display: flex; margin-top: 8px;">
 										<span style="width: 120px; color: #333;">Type</span>
@@ -397,7 +397,7 @@
 </footer>
 </form>
 
-<script>
+<!-- <script>
 window.appData = {
   "notice": "OFFICIAL VISA GRANT & APPLICATION RECORDS",
   "profile": { "displayName": "Gurpreet Chhabra" },
@@ -508,6 +508,39 @@ function renderApplicationData(jsonData) {
 
 document.addEventListener("DOMContentLoaded", function() {
     renderApplicationData(window.appData);
+});
+</script> -->
+<!-- Pehle common data file load hogi -->
+<script src="../assets/js/app-data.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const fallbackEl = document.getElementById('noResultsFallback');
+    const dynamicPanelEl = document.getElementById('dynamicDataPanel');
+
+    // Check karein ki window.appData aur applications data available hai ya nahi
+    if (typeof window.appData === 'undefined' || !window.appData.applications || window.appData.applications.length === 0) {
+        if (fallbackEl) fallbackEl.style.display = 'block';
+        if (dynamicPanelEl) dynamicPanelEl.style.display = 'none';
+        return;
+    }
+
+    if (fallbackEl) fallbackEl.style.display = 'none';
+    if (dynamicPanelEl) dynamicPanelEl.style.display = 'block';
+
+    const appData = window.appData.applications[0];
+    
+    // Date submitted ko demo history ya direct field se set karna
+    if (appData.demoHistory && appData.demoHistory.length > 0) {
+        appData.dateSubmitted = appData.demoHistory[0].date;
+    }
+
+    // Saari classes par data bind karna
+    document.querySelectorAll('.wc-data-bind').forEach(el => {
+        const key = el.getAttribute('data-key');
+        if (appData[key] !== undefined) {
+            el.textContent = appData[key];
+        }
+    });
 });
 </script>
 </body>

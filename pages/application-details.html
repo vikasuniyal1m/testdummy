@@ -63,7 +63,7 @@
 </footer>
 </form>
 
-<script>
+<!-- <script>
   let currentAppData = null;
   const urlParams = new URLSearchParams(window.location.search);
   const selectedAppId = urlParams.get('id') || 'granted-demo';
@@ -423,6 +423,236 @@
   } else {
     initApplicationDetails();
   }
+</script> -->
+<!-- Pehle common data file load hogi -->
+<script src="../assets/js/app-data.js"></script>
+<script>
+  let currentAppData = null;
+  const urlParams = new URLSearchParams(window.location.search);
+  const selectedAppId = urlParams.get('id') || 'granted-408';
+
+  function initApplicationDetails() {
+    // Seedhe window.appData se data uthayega bina kisi fetch error ke
+    if (typeof window.appData !== 'undefined' && window.appData.applications) {
+      const localStored = localStorage.getItem('user_demo_applications');
+      let allApps = [...window.appData.applications];
+      if (localStored) {
+        allApps = [...allApps, ...JSON.parse(localStored)];
+      }
+      
+      currentAppData = allApps.find(app => app.id === selectedAppId) || allApps[0];
+      
+      const profileElem = document.getElementById('headerProfileText') || document.getElementById('_0a0a0-body');
+      if (profileElem && currentAppData) {
+        profileElem.innerText = currentAppData.applicantName || "Gurpreet Chhabra";
+      }
+
+      renderSectionView('home');
+    } else {
+      document.getElementById('demo-detail-output').innerHTML = '<p>Error: Data not loaded properly.</p>';
+    }
+  }
+
+  function switchView(viewName) {
+    renderSectionView(viewName);
+  }
+
+  function renderSectionView(view) {
+    const outputDiv = document.getElementById('demo-detail-output');
+    if (!outputDiv || !currentAppData) return;
+
+    if (view === 'home') {
+      if (Array.isArray(currentAppData.homeApplicants)) {
+        outputDiv.textContent = '';
+
+        const homeHeading = document.createElement('h2');
+        homeHeading.textContent = 'Application home';
+        outputDiv.appendChild(homeHeading);
+
+        const applicationStatus = document.createElement('p');
+        const statusLabel = document.createElement('strong');
+        statusLabel.textContent = 'Application status: ';
+        applicationStatus.appendChild(statusLabel);
+        applicationStatus.appendChild(document.createTextNode(currentAppData.applicationStatus || currentAppData.status || ''));
+        outputDiv.appendChild(applicationStatus);
+
+        const applicantsHeading = document.createElement('h3');
+        applicantsHeading.textContent = 'Applicants';
+        outputDiv.appendChild(applicantsHeading);
+        const applicantsList = document.createElement('ul');
+        currentAppData.homeApplicants.forEach(applicant => {
+          const item = document.createElement('li');
+          item.textContent = `${applicant.name} - ${applicant.status}`;
+          applicantsList.appendChild(item);
+        });
+        outputDiv.appendChild(applicantsList);
+
+        const informationHeading = document.createElement('h3');
+        informationHeading.textContent = 'Important information';
+        outputDiv.appendChild(informationHeading);
+        const information = document.createElement('p');
+        information.textContent = currentAppData.importantInformation || '';
+        outputDiv.appendChild(information);
+
+        const historyHeading = document.createElement('h3');
+        historyHeading.textContent = 'Application history';
+        outputDiv.appendChild(historyHeading);
+        const historyTable = document.createElement('table');
+        historyTable.className = 'demo-history';
+        const historyHead = document.createElement('thead');
+        const headingRow = document.createElement('tr');
+        ['Type', 'Date', 'Action'].forEach(text => {
+          const cell = document.createElement('th');
+          cell.scope = 'col';
+          cell.textContent = text;
+          headingRow.appendChild(cell);
+        });
+        historyHead.appendChild(headingRow);
+        historyTable.appendChild(historyHead);
+
+        const historyBody = document.createElement('tbody');
+        (currentAppData.demoHistory || []).forEach(entry => {
+          const row = document.createElement('tr');
+          [entry.type, entry.date].forEach(text => {
+            const cell = document.createElement('td');
+            cell.textContent = text || '—';
+            row.appendChild(cell);
+          });
+          const actionCell = document.createElement('td');
+          if (entry.url) {
+            const actionLink = document.createElement('a');
+            actionLink.href = entry.url;
+            actionLink.textContent = entry.action || 'View';
+            actionLink.target = '_blank';
+            actionLink.rel = 'noopener';
+            actionCell.appendChild(actionLink);
+          } else {
+            actionCell.textContent = entry.action || '—';
+          }
+          row.appendChild(actionCell);
+          historyBody.appendChild(row);
+        });
+        historyTable.appendChild(historyBody);
+        outputDiv.appendChild(historyTable);
+        return;
+      }
+    } else if (view === 'messages') {
+      outputDiv.textContent = '';
+      const messagesHeading = document.createElement('h3');
+      messagesHeading.textContent = 'Messages';
+      outputDiv.appendChild(messagesHeading);
+      const correspondenceNotice = document.createElement('p');
+      correspondenceNotice.textContent = `Correspondence for this application is currently being sent to the Primary Applicant at the following email address: ${currentAppData.demoCorrespondenceEmail || 'iamsforsanjay@gmail.com'}`;
+      outputDiv.appendChild(correspondenceNotice);
+
+      const correspondenceHeading = document.createElement('h3');
+      correspondenceHeading.style.marginTop = '20px';
+      correspondenceHeading.textContent = 'List of correspondence';
+      outputDiv.appendChild(correspondenceHeading);
+      const correspondenceTable = document.createElement('table');
+      correspondenceTable.className = 'demo-history';
+      const correspondenceHead = document.createElement('thead');
+      const headingRow = document.createElement('tr');
+      ['Correspondence title', 'Date sent', 'Email'].forEach(text => {
+        const cell = document.createElement('th');
+        cell.scope = 'col';
+        cell.textContent = text;
+        headingRow.appendChild(cell);
+      });
+      correspondenceHead.appendChild(headingRow);
+      correspondenceTable.appendChild(correspondenceHead);
+
+      const correspondenceBody = document.createElement('tbody');
+      (currentAppData.demoCorrespondence || []).forEach(correspondence => {
+        const row = document.createElement('tr');
+        const titleCell = document.createElement('td');
+        if (correspondence.url) {
+          const link = document.createElement('a');
+          link.href = correspondence.url;
+          link.textContent = correspondence.title;
+          titleCell.appendChild(link);
+        } else {
+          titleCell.textContent = correspondence.title;
+        }
+        const dateCell = document.createElement('td');
+        dateCell.textContent = correspondence.date || '—';
+        const emailCell = document.createElement('td');
+        emailCell.textContent = currentAppData.demoCorrespondenceEmail || 'iamsforsanjay@gmail.com';
+        row.append(titleCell, dateCell, emailCell);
+        correspondenceBody.appendChild(row);
+      });
+      correspondenceTable.appendChild(correspondenceBody);
+      outputDiv.appendChild(correspondenceTable);
+    } else if (view === 'update-details') {
+      outputDiv.textContent = '';
+      const updateHeading = document.createElement('h2');
+      updateHeading.textContent = 'Update details';
+      outputDiv.appendChild(updateHeading);
+
+      const updatesHeading = document.createElement('h3');
+      updatesHeading.textContent = 'List of updates provided';
+      outputDiv.appendChild(updatesHeading);
+
+      const updatesTable = document.createElement('table');
+      updatesTable.className = 'demo-history';
+      const updatesHead = document.createElement('thead');
+      const updatesHeaderRow = document.createElement('tr');
+      ['Client', 'Status', 'Action'].forEach(text => {
+        const cell = document.createElement('th');
+        cell.scope = 'col';
+        cell.textContent = text;
+        updatesHeaderRow.appendChild(cell);
+      });
+      updatesHead.appendChild(updatesHeaderRow);
+      updatesTable.appendChild(updatesHead);
+
+      const updatesBody = document.createElement('tbody');
+      (currentAppData.demoUpdates || []).forEach(update => {
+        const row = document.createElement('tr');
+        const clientCell = document.createElement('td');
+        const updateType = document.createElement('strong');
+        updateType.textContent = update.type;
+        clientCell.appendChild(updateType);
+        clientCell.appendChild(document.createElement('br'));
+        clientCell.appendChild(document.createTextNode(update.applicant || currentAppData.applicantName));
+
+        const statusCell = document.createElement('td');
+        statusCell.textContent = update.status;
+        statusCell.appendChild(document.createElement('br'));
+        statusCell.appendChild(document.createTextNode(update.date));
+
+        const actionCell = document.createElement('td');
+        const actionLink = document.createElement('a');
+        actionLink.href = update.actionUrl;
+        actionLink.textContent = update.actionLabel || update.action;
+        actionLink.target = '_blank';
+        actionLink.rel = 'noopener';
+        actionCell.appendChild(actionLink);
+
+        row.append(clientCell, statusCell, actionCell);
+        updatesBody.appendChild(row);
+      });
+      updatesTable.appendChild(updatesBody);
+      outputDiv.appendChild(updatesTable);
+    } else if (view === 'visa-grant-details') {
+      outputDiv.innerHTML = `
+        <h3>Visa Grant Details</h3>
+        <p><strong>Grant Date:</strong> ${currentAppData.dateOfGrant || '23 October 2026'}</p>
+        <p><strong>Must Not Arrive After:</strong> ${currentAppData.mustNotArriveAfter || '23 October 2029'}</p>
+        <p><strong>Length of Stay:</strong> ${currentAppData.lengthOfStay || '3 month(s) from the date of each arrival'}</p>
+        <p><strong>Travel:</strong> ${currentAppData.travel || 'Multiple entries'}</p>
+        <div style="margin-top: 15px;">
+          <a href="gemini-code-1793220976142.html?id=${currentAppData.id}" class="wc-button" style="background:#047857; color:#fff; padding:8px 16px; text-decoration:none; border-radius:4px; display:inline-block;">Open Official Grant Notice Generator</a>
+        </div>
+      `;
+    } else if (view === 'attachments') {
+      outputDiv.innerHTML = `<h3>View Attachments</h3><p>No attachments uploaded.</p>`;
+    } else if (view === 'biometrics') {
+      outputDiv.innerHTML = `<h3>Biometrics Collection</h3><p>Status: Completed or waived for demo testing.</p>`;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", initApplicationDetails);
 </script>
 </body>
 </html>
