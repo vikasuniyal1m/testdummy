@@ -10,7 +10,7 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parent
 DATA_FILE = ROOT / "assets" / "data" / "demo-applications.json"
 HOST = "127.0.0.1"
-PORT = int(os.environ.get("PORT", "8766"))
+PORT = int(os.environ.get("PORT", "8767"))
 MAX_REQUEST_BYTES = 16_384
 
 

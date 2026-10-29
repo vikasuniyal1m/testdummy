@@ -1,151 +1,56 @@
 {
-  "notice": "OFFICIAL VISA GRANT & APPLICATION DEMO RECORDS",
+  "notice": "OFFICIAL VISA GRANT & APPLICATION RECORDS",
   "profile": {
-    "displayName": "Sushma Sharma"
+    "displayName": "Gurpreet Chhabra"
   },
   "applications": [
     {
-      "id": "granted-demo",
-      "applicantName": "Sushma SHARMA",
+      "id": "granted-408",
+      "applicantName": "Gurpreet CHHABRA",
       "applicantStatus": "Granted",
-      "dateOfBirth": "29 June 1978",
-      "applicationType": "Visitor (subclass 600)",
+      "dateOfBirth": "27 November 1990",
+      "applicationType": "Work (subclass 408)",
       "status": "Granted",
       "applicationStatus": "Finalised",
-      "referenceNumber": "1069585666179",
-      "applicationId": "835678932",
-      "transactionReference": "EGP0V7PCN7",
-      "dateOfApplication": "15 December 2023",
-      "dateOfGrant": "28 December 2023",
-      "mustNotArriveAfter": "28 December 2026",
+      "referenceNumber": "1069558350291",
+      "applicationId": "365717522",
+      "transactionReference": "EGPBMEQJQP",
+      "dateOfGrant": "23 October 2026",
+      "mustNotArriveAfter": "23 October 2029",
       "lengthOfStay": "3 month(s) from the date of each arrival",
       "travel": "Multiple entries",
-      "applicationTypeCode": "1",
-      "passportNumber": "N2012158",
+      "passportNumber": "R7814049",
       "passportCountryCode": "IND",
       "passportCountry": "INDIA",
-      "stream": "Tourist",
+      "stream": "Work",
       "conditions": [
-        "8558 - Maximum 12 months stay in 18 months",
-        "8101 - No work",
-        "8201 - Maximum three months study"
+        "8501 - Maintain health insurance",
+        "8107 - Work limitation",
+        "8303 - Activity limitation"
       ],
-      "demoMessages": [
+      "messages": [
         {
-          "date": "28 December 2023",
+          "date": "23 October 2026",
           "subject": "Visa application approved and granted",
-          "body": "Your Visitor (subclass 600) visa application has been successfully finalised and granted by the Department of Home Affairs."
+          "body": "We have granted you a work (subclass 408) visa on 23 October 2026."
         }
       ],
-      "demoCorrespondenceEmail": "iamsforsanjay@gmail.com",
-      "demoCorrespondence": [
+      "correspondence": [
         {
-          "title": "Notification of Grant of Visitor Visa (Subclass 600)",
-          "date": "28 December 2023",
-          "url": "gemini-code-1793220976142.html?id=granted-demo"
+          "title": "Notification of Grant of Work Visa (Subclass 408)",
+          "date": "23 October 2026",
+          "url": "visa-grant-notice.html?id=365717522"
         }
       ],
-      "importantInformation": "You are authorized to travel to and enter Australia under the conditions specified in this notice.",
-      "demoUpdates": [
+      "importantInformation": "An explanation of each condition of this Work (subclass 408) visa is included in this letter.",
+      "updates": [
         {
           "type": "Visa Grant Notice Issued",
-          "applicant": "Sushma SHARMA",
+          "applicant": "Gurpreet CHHABRA",
           "status": "Completed",
-          "date": "28 December 2023",
+          "date": "23 October 2026",
           "action": "Official grant notification generated",
-          "actionUrl": "gemini-code-1793220976142.html?id=granted-demo"
-        },
-        {
-          "type": "Change of passport details",
-          "applicant": "SHARMA, SUSHMA (29 Jun 1978)",
-          "status": "Submitted",
-          "date": "18 May 2026",
-          "action": "View form (PDF)",
-          "actionLabel": "View form (PDF)",
-          "actionUrl": "https://online.immi.gov.au/elp/showPdf?trn=EGPCNEUKW6&signature=SSTdBV1FgR7Ze6mtGGmDWZ0YKcI%3D&type=application"
-        }
-      ]
-    },
-    {
-      "id": "received-demo-02",
-      "applicantName": "Rahul SHARMA",
-      "applicantStatus": "Received",
-      "dateOfBirth": "12 May 1985",
-      "applicationType": "Visitor (subclass 600)",
-      "status": "Received — pending assessment",
-      "referenceNumber": "DEMO-REC-992",
-      "applicationId": "842910342",
-      "transactionReference": "TRN89234IN",
-      "dateOfApplication": "10 October 2025",
-      "applicationTypeCode": "1",
-      "passportNumber": " ",
-      "passportCountryCode": "IND",
-      "passportCountry": "INDIA",
-      "stream": "Tourist",
-      "demoCorrespondenceEmail": "iamsforsanjay@gmail.com",
-      "demoCorrespondence": [
-        {
-          "title": "Application Receipt Acknowledgment",
-          "date": "10 October 2025",
-          "url": "gemini-code-1793220976142.html?id=received-demo-02"
-        }
-      ],
-      "demoUpdates": [
-        {
-          "type": "Document Verification",
-          "applicant": "Rahul SHARMA",
-          "status": "In Progress",
-          "date": "12 October 2025",
-          "action": "Under review by processing officer"
-        }
-      ]
-    },
-    {
-      "id": "student-visa-03",
-      "applicantName": "Amit UNIYAL",
-      "applicantStatus": "Finalised",
-      "dateOfBirth": "5 November 2000",
-      "applicationType": "Student Visa (subclass 500)",
-      "status": "Granted",
-      "referenceNumber": "STU-GRT-554",
-      "applicationId": "918237465",
-      "transactionReference": "TRNSTUDENT1",
-      "dateOfApplication": "01 August 2025",
-      "dateOfGrant": "15 August 2025",
-      "mustNotArriveAfter": "15 August 2028",
-      "lengthOfStay": "Duration of course plus 2 months",
-      "travel": "Multiple entries",
-      "applicationTypeCode": "500",
-      "passportNumber": "R1234567",
-      "passportCountryCode": "IND",
-      "passportCountry": "INDIA",
-      "stream": "Higher Education Sector",
-      "conditions": [
-        "8105 - Work limitation (48 hours per fortnight)",
-        "8202 - Meet course requirements"
-      ],
-      "demoMessages": [
-        {
-          "date": "15 August 2025",
-          "subject": "Student Visa Grant Notification",
-          "body": "Your Student Visa (subclass 500) has been granted. Please ensure compliance with all visa conditions."
-        }
-      ],
-      "demoCorrespondenceEmail": "amit.uniyl@example.test",
-      "demoCorrespondence": [
-        {
-          "title": "Student Visa Grant Notice",
-          "date": "15 August 2025",
-          "url": "gemini-code-1793220976142.html?id=student-visa-03"
-        }
-      ],
-      "demoUpdates": [
-        {
-          "type": "Enrollment Confirmation",
-          "applicant": "Amit UNIYAL",
-          "status": "Verified",
-          "date": "15 August 2025",
-          "actionUrl": "gemini-code-1793220976142.html?id=student-visa-03"
+          "actionUrl": "visa-grant-notice.html?id=365717522"
         }
       ]
     }

@@ -14,7 +14,7 @@
 			var form = document.querySelector("form");
 			document.body.insertBefore(message, form || document.body.firstChild);
 		}
-		var details = " Start the local JSON-writing server with \"python local-demo-server.py\" and open http://127.0.0.1:8766/.";
+		var details = " Start the local JSON-writing server with \"python local-demo-server.py\" and open http://127.0.0.1:8767/.";
 		message.textContent = "Demo data could not be loaded: " + error.message + "." + details;
 	}
 
